@@ -3,13 +3,13 @@ import {
   SignedOut,
   SignInButton,
   SignUpButton,
-  UserButton,
 } from "@clerk/nextjs";
 import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { CookieIcon, RefrigeratorIcon } from "lucide-react";
+import UserDropdown from "./UserDropdown";
 
 const Header = () => {
   const user = null; // to do: get the user from clerk
@@ -39,7 +39,7 @@ const Header = () => {
           {/* Show the user button when the user is signed in */}
           <SignedIn>
           {/* How To Cook */}
-            <UserButton />
+            <UserDropdown />
           </SignedIn>
 
           {/* Show the sign in and sign up buttons when the user is not signed in */}
