@@ -11,7 +11,7 @@ import Image from "next/image";
 import { CookieIcon, RefrigeratorIcon } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 
-const Header = () => {
+const Header = async () => {
   const user = null; // to do: get the user from clerk
   return (
     <header className="fixed top-0 w-full border-b border-stone-200 bg-stone-50/89 backdrop-blur-md z-50 supports-backdrop-filters:bg-stone-50/60">
