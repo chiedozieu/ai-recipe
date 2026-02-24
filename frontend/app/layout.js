@@ -9,31 +9,41 @@ const inter = Inter({
 
 export const metadata = {
   title: "AI Recipe Generator",
-  description: "AI Recipe Generator is a web application that generates recipes based on user input. It uses OpenAI's GPT-3.5-turbo model to create recipes from a list of ingredients provided by the user.",
+  description:
+    "AI Recipe Generator is a web application that generates recipes based on user input. It uses OpenAI's GPT-3.5-turbo model to create recipes from a list of ingredients provided by the user.",
 };
 
 export default function RootLayout({ children }) {
   return (
-     <ClerkProvider>
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className}`}
-      >
-      <Header />
-        <main className="min-h-screen">{children}</main>
-        <footer className="bg-gray-100 py-4">
-          <div className="max-w-6xl mx-auto flex justify-between items-center">
-            <p className="text-sm text-gray-500">
-              &copy; {new Date().getFullYear()} AI Recipe Generator. All rights
-              reserved.
-            </p>
-            <p className="text-sm text-gray-500">
-              Built with Next.js, Tailwind CSS, and OpenAI API.
-            </p>
-          </div>
-        </footer>
-      </body>
-    </html>
+    <ClerkProvider
+      appearance={{
+        elements: {
+          drawerRoot: {
+            zIndex: 9999,
+          },
+          modalBackdrop: {
+            zIndex: 9998,
+          },
+        },
+      }}
+    >
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.className}`}>
+          <Header />
+          <main className="min-h-screen ">{children}</main>
+          <footer className="bg-gray-100 py-4">
+            <div className="max-w-6xl mx-auto flex justify-between items-center">
+              <p className="text-sm text-gray-500">
+                &copy; {new Date().getFullYear()} AI Recipe Generator. All
+                rights reserved.
+              </p>
+              <p className="text-sm text-gray-500">
+                Built with Next.js, Tailwind CSS, and OpenAI API.
+              </p>
+            </div>
+          </footer>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
