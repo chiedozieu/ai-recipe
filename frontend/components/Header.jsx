@@ -10,9 +10,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { CookieIcon, RefrigeratorIcon } from "lucide-react";
 import UserDropdown from "./UserDropdown";
+import { checkUser } from "@/lib/checkUser";
+import PricingModal from "./PricingModal";
 
 const Header = async () => {
-  const user = null; // to do: get the user from clerk
+  const user = await checkUser();
   return (
     <header className="fixed top-0 w-full border-b border-stone-200 bg-stone-50/89 backdrop-blur-md z-50 supports-backdrop-filters:bg-stone-50/60">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -39,6 +41,9 @@ const Header = async () => {
           {/* Show the user button when the user is signed in */}
           <SignedIn>
           {/* How To Cook */}
+          { user && (<PricingModal>
+            subscription={user.subscription}
+          </PricingModal>)}
             <UserDropdown />
           </SignedIn>
 

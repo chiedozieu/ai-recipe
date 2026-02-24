@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { toast } from "sonner";
 
 const STRAPI_URL =
@@ -16,8 +16,8 @@ export const checkUser = async () => {
     toast.error(error.message);
     return null;
   }
-
-  const subscriptionTier = "free"; // TODO: implement pricing logic here
+const { has } = await auth();
+  const subscriptionTier = has({plan: "pro"}) ? "pro" : "free";
 
   try {
     // Check if the user exists in Strapi
@@ -32,7 +32,7 @@ export const checkUser = async () => {
     );
     if (!existingUserResponse.ok) {
       const errorText = await existingUserResponse.text();
-      console.error("Error checking user in Strapi:", errorText);
+      console.error("❌ Error checking user in Strapi:", errorText);
       return null;
     }
 
@@ -53,5 +53,65 @@ export const checkUser = async () => {
       }
       return {...existingUser, subscriptionTier};
     }
-  } catch (error) {}
+    // If the user doesn't exist in Strapi, create a new user
+
+    // get authenticated role
+
+    const roleResponse = await fetch(
+      `${STRAPI_URL}/api/users-permissions/roles`,
+      {
+        headers: {
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        },
+      },
+    );
+   
+
+    const rolesData = await roleResponse.json();
+    const authenticatedRole = rolesData.roles.find((role) => role.type === "authenticated");
+
+     if (!authenticatedRole) {
+      console.error("❌ Authenticated role not found");
+      return null;
+    }
+
+// create a new user
+
+const userData = {
+  username:user.username || user.emailAddresses[0].emailAddress.split("@")[0],
+  email:user.emailAddresses[0].emailAddress,
+  password: `clerk_managed_${user.id}_${Date.now()}`,
+  confirmed: true,
+  blocked: false,
+  role: authenticatedRole.id,
+
+  clerkId:user.id,
+  firstName:user.firstName || "",
+  lastName:user.lastName || "",
+  imageUrl:user.imageUrl || "",
+  subscriptionTier,
+};
+
+
+    const newUserResponse = await fetch(`${STRAPI_URL}/api/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!newUserResponse.ok) {
+      const errorText = await newUserResponse.text();
+      console.error("❌ Error creating user:", errorText);
+      return null;
+    }
+
+    const newUser= await newUserResponse.json();
+    return newUser
+  } catch (error) {
+    console.error("❌ Error checking user:", error);
+    return null;
+  }
 };
