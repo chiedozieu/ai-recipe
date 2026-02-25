@@ -1,8 +1,16 @@
+import PricingSection from "@/components/PricingSection";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { FEATURES, HOW_IT_WORKS_STEPS, SITE_STATS } from "@/lib/data";
 import { auth } from "@clerk/nextjs/server";
-import { ArrowRightIcon, FlameIcon, StarIcon, TimerIcon, Users2Icon } from "lucide-react";
+import {
+  ArrowRightIcon,
+  FlameIcon,
+  StarIcon,
+  TimerIcon,
+  Users2Icon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -65,7 +73,7 @@ export default async function Home() {
                         <h3 className="font-bold text-lg">
                           Rustic Tomato Basil Pasta
                         </h3>
-                         <Badge
+                        <Badge
                           variant="outline"
                           className="border-2 border-green-700 bg-green-50 text-green-700 font-bold "
                         >
@@ -79,9 +87,8 @@ export default async function Home() {
                             className="w-3 h-3 text-orange-500 fill-orange-500"
                           />
                         ))}
-                       
                       </div>
-                      
+
                       <div className="flex gap-2 mt-1 text-xs text-gray-400 font-bold items-center">
                         <div className="flex gap-0.5 items-center">
                           <TimerIcon className="h-3 w-3" />
@@ -89,8 +96,7 @@ export default async function Home() {
                         </div>
 
                         <div className="flex gap-0.5 items-center">
-                          <Users2Icon className="h-3 w-3" />
-                          2 servings
+                          <Users2Icon className="h-3 w-3" />2 servings
                         </div>
                       </div>
                     </div>
@@ -99,6 +105,92 @@ export default async function Home() {
               </Card>
             </Card>
           </div>
+        </div>
+      </section>
+      <section className="py-12 border-y-2 border-stone-900 bg-stone-900 ">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center px-4">
+          {SITE_STATS.map((stat, index) => (
+            <div key={index} className="">
+              <div className="text-4xl font-bold mb-1 text-stone-50">
+                {stat.val}
+              </div>
+              <Badge
+                variant="secondary"
+                className="bg-transparent uppercase text-sm text-orange-500 tracking-wide font-medium border-none"
+              >
+                {stat.label}
+              </Badge>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-16">
+            <h2 className="text-5xl md:text-6xl font-bold mb-4">
+              Your Smart Kitchen
+            </h2>
+            <p className="text-xl text-stone-600 font-light">
+              Everything you need to master your meal prep.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {FEATURES.map((feature, index) => {
+              const IconComponent = feature.icon;
+              return (
+                <Card
+                  key={index}
+                  className="border-2 border-stone-200 bg-white hover:border-orange-600 hover:shadow-lg py-0 transition-all duration-300 group hover:cursor-pointer"
+                >
+                  <CardContent className="p-8">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="border-2 border-stone-200 bg-orange-50 p-3 group-hover:bg-orange-100 group-hover:border-orange-600 transition-colors duration-300">
+                        <IconComponent className="h-6 w-6 text-orange-600" />
+                      </div>
+                      <Badge
+                        variant="secondary"
+                        className="font-mono text-xs text-stone-600 bg-stone-100 uppercase tracking-wide border border-stone-200"
+                      >
+                        {feature.limit}
+                      </Badge>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
+                    <p className="text-lg text-stone-600 font-light">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+      <section className="py-24 px-4 border-y-2 border-stone-200 bg-stone-900 text-stone-50 ">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-5xl md:text-6xl">Cook in 3 Easy Steps</h2>
+          <div className="my-12">
+            {HOW_IT_WORKS_STEPS.map((item, index) => {
+              return (
+                <div key={index} className="">
+                  <div className="flex gap-6 items-start">
+                    <Badge variant="outline" className="text-6xl font-bold text-orange-500 border-none bg-transparent p-0 h-auto">
+                      {item.step}
+                    </Badge>
+                    <div className="">
+                      <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
+                      <p className="text-lg text-stone-400 font-light">{item.desc}</p>
+                    </div>
+                  </div>
+                  {index !== HOW_IT_WORKS_STEPS.length - 1 && <div className="h-0.5 bg-stone-700 my-8" />}
+                </div>
+                )
+            })}
+          </div>
+        </div>
+      </section>
+      <section className="py-24 px-4">
+        <div className="max-w-4xl mx-auto">
+          <PricingSection />
         </div>
       </section>
     </div>
