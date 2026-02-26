@@ -79,8 +79,6 @@ export function getCategoryEmoji(category) {
 // Helper function for country flags
 export function getCountryFlag(country) {
   const emojiMap = {
-    Nigerian: "🦅",
-    Igbo: "🥔",
     American: "🗽",
     British: "👑",
     Canadian: "🍁",
@@ -91,6 +89,7 @@ export function getCountryFlag(country) {
     Filipino: "🌴",
     French: "🥐",
     Greek: "🏛️",
+    Igbo: "🥔",
     Indian: "🪷",
     Irish: "☘️",
     Italian: "🍕",
@@ -100,6 +99,7 @@ export function getCountryFlag(country) {
     Malaysian: "🌺",
     Mexican: "🌮",
     Moroccan: "🕌",
+    Nigerian: "🦅",
     Polish: "🦅",
     Portuguese: "🚢",
     Russian: "❄️",

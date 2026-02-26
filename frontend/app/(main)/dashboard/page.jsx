@@ -1,12 +1,12 @@
 import {
   getAreas,
   getCategories,
-  getMealsByArea,
-  getMealsByCategory,
   getRecipeOfTheDay,
 } from "@/actions/mealdb.actions";
 import { Badge } from "@/components/ui/badge";
-import { Flame, GlobeIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { getCategoryEmoji, getCountryFlag } from "@/lib/data";
+import { ArrowRightIcon, Flame, GlobeIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -56,14 +56,34 @@ const DashboardPage = async () => {
                   </div>
                   <div className="p-8 md:p-12 flex flex-col justify-center">
                     <div className="mb-6 flex flex-wrap gap-2">
-                      <Badge variant="outline" className="border-2 border-orange-600 text-orange-700 bg-orange-50 font-bold">
+                      <Badge
+                        variant="outline"
+                        className="border-2 border-orange-600 text-orange-700 bg-orange-50 font-bold"
+                      >
                         {recipeOfTheDay.strCategory}
                       </Badge>
-                      <Badge variant="outline" className="border-2 border-stone-900 text-stone-700 bg-stone-50 font-bold">
-                      <GlobeIcon className="mr-1 h-3 w-3" />
+                      <Badge
+                        variant="outline"
+                        className="border-2 border-stone-900 text-stone-700 bg-stone-50 font-bold"
+                      >
+                        <GlobeIcon className="mr-1 h-3 w-3" />
                         {recipeOfTheDay.strArea}
                       </Badge>
                     </div>
+                    <h2 className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 group-hover:text-orange-600 transition-colors leading-tight">
+                      {recipeOfTheDay.strMeal}
+                    </h2>
+                    <p className="text-stone-600 mb-6 line-clamp-3 font-light text-lg">
+                      {recipeOfTheDay.strInstructions?.substring(0, 200)}...
+                    </p>
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      className="cursor-pointer"
+                    >
+                      Start Cooking{" "}
+                      <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-all duration-300" />
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -72,6 +92,65 @@ const DashboardPage = async () => {
         )}
 
         {/* browse by category */}
+        <section className="mb-24">
+          <div className="mb-8">
+            <h2 className="text-4xl md:text-5xl font-bold text-stone-900 mb-2">
+              Browse by Category
+            </h2>
+            <p className="text-lg text-stone-600 font-light">
+              Find recipes that match your culinary preferences.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+            {categories.map((category) => (
+              <Link
+                key={category.strCategory}
+                href={`/recipes/category/${category.strCategory.toLowerCase()}`}
+              >
+                <div className="bg-white p-6 border-2 border-stone-200 hover:border-orange-600 hover:shadow-lg transition-all text-center group">
+                  <div className="text-4xl mb-3">
+                    {getCategoryEmoji(category.strCategory)}
+                  </div>
+                  <h3 className="font-bold text-stone-900 group-hover:text-orange-600 transition-colors text-sm">
+                    {category.strCategory}
+                  </h3>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* browse by area */}
+
+        <section className="mb-24">
+          <div className="mb-8">
+            <h2 className="text-4xl md:text-5xl font-bold text-stone-900 mb-2">
+              Explore world cuisines
+            </h2>
+            <p className="text-lg text-stone-600 font-light">
+              Travel the globe through food.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+            {areas.map((area) => (
+              <Link
+                key={area.strArea}
+                href={`/recipes/cuisine/${area.strArea.toLowerCase().replace(/\s+/g, "-")}`}
+              >
+                <div className="bg-stone-50 p-5 border-2 border-stone-200 hover:border-orange-600 hover:shadow-lg transition-all cursor-pointer group">
+                  <div className="flex items-center">
+                    <span className="text-3xl mr-1">
+                      {getCountryFlag(area.strArea)}
+                    </span>
+                    <span className="font-bold text-stone-900 group-hover:text-orange-600 transition-colors text-sm">
+                      {area.strArea}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* browse by cuisine */}
       </div>

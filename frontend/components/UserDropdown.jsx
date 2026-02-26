@@ -6,22 +6,23 @@ import React from "react";
 
 const UserDropdown = () => {
   return (
-    <UserButton>
-      <UserButton.MenuItems>
-        <UserButton.Link
-          href="/recipes"
-          label="My Recipes"
-          labelIcon={<CookieIcon size={16} />}
-        />
-
-        <UserButton.Link
-          href="/recipes"
-          label="My Pantry"
-          labelIcon={<RefrigeratorIcon size={16} />}
-        />
-        <UserButton.Action label="manageAccount"/>
-      </UserButton.MenuItems>
-    </UserButton>
+    <>
+      <UserButton>
+        <UserButton.MenuItems>
+          <UserButton.Link
+            href="/recipes"
+            label="My Recipes"
+            labelIcon={<CookieIcon size={16} />}
+          />
+          <UserButton.Link
+            href="/recipes"
+            label="My Pantry"
+            labelIcon={<RefrigeratorIcon size={16} />}
+          />
+          <UserButton.Action label="manageAccount"/>
+        </UserButton.MenuItems>
+      </UserButton>
+    </>
   );
 };
 

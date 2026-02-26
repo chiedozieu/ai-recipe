@@ -41,7 +41,7 @@ const Header = async () => {
               <PricingModal subscription={user.subscription}>
                 <Badge
                   variant="outline"
-                  className={`flex h-8 px-3 gap-1.5 rounded-full text-xs font-semibold transition-all ${user.subscriptionTier === "pro" ? "bg-linear-to-r from-orange-600 to-amber-500 text-white border-none shadow-sm hover:bg-linear-to-r hover:from-orange-700 hover:to-amber-600 cursor-pointer" : "bg-stone-200/50 border-stone-200/50 text-stone-600 cursor-pointer hover:bg-stone-300/50 hover:border-stone-300"} `}
+                  className={`flex h-8 px-3 gap-1.5 rounded-full text-xs font-semibold transition-all duration-300 ${user.subscriptionTier === "pro" ? "bg-linear-to-r from-orange-600 to-amber-500 text-white border-none shadow-sm hover:bg-linear-to-r hover:from-orange-700 hover:to-amber-600 cursor-pointer" : "bg-stone-200/50 border-stone-200/50 text-stone-600 cursor-pointer hover:bg-stone-300/50 hover:border-stone-300"} `}
                 >
                   <SparklesIcon
                     className={`size-3 ${user.subscriptionTier === "pro" ? "text-white fill-white/20" : "text-stone-500"}`}
