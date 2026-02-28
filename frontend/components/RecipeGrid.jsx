@@ -2,6 +2,7 @@ import useFetch from "@/hooks/use-fetch";
 import { ArrowLeftIcon, Loader2Icon } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
+import RecipeCard from "./RecipeCard";
 
 const RecipeGrid = ({ type, value, fetchAction, backLink }) => {
   const { data, loading, fn: fetchMeals } = useFetch(fetchAction);
@@ -47,9 +48,9 @@ const RecipeGrid = ({ type, value, fetchAction, backLink }) => {
 
         {/* loading state */}
         {loading && (
-          <div className="flex justify-center items-center py-20">
+          <div className="flex flex-col justify-center items-center py-20">
             <Loader2Icon className="animate-spin size-10 text-orange-600 mb-4" />
-            <p className="text-stone-500 ml-2"> Loading...</p>
+            <p className="text-stone-500 ml-2"> Loading your recipes...</p>
           </div>
         )}
         {/* meals */}
@@ -57,14 +58,7 @@ const RecipeGrid = ({ type, value, fetchAction, backLink }) => {
                 !loading && meals.length > 0 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
                         {meals.map((meal) => (
-                            <Link href={`/recipe/${meal.idMeal}`} key={meal.idMeal}>
-                                <div className="shadow-lg rounded-md overflow-hidden">
-                                    <img src={meal.strMealThumb} alt={meal.strMeal} className="w-full h-48 object-cover" />
-                                    <div className="p-4">
-                                        <h2 className="text-lg font-semibold text-stone-900 mb-2">{meal.strMeal}</h2>
-                                    </div>
-                                </div>
-                            </Link>
+                            <RecipeCard key={meal.idMeal} recipe={meal} variant="grid" />
                         ))}
                     </div>
                 )
