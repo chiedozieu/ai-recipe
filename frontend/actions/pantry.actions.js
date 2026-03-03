@@ -11,7 +11,7 @@ const STRAPI_URL =
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN;
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(STRAPI_API_TOKEN);
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 export async function scanPantryImage(formData) {
   try {
@@ -150,7 +150,7 @@ export async function saveToPantry(formData) {
 
       if (!response.ok) {
         throw new Error("Failed to save to pantry");
-      } 
+      }
       const data = await response.json();
       savedItems.push(data.data);
     }
@@ -214,12 +214,15 @@ export async function getPantryItems() {
       throw new Error("User not authenticated");
     }
 
-    const response = await fetch(`${STRAPI_URL}/api/pantry-items?filters[owner][id][$eq]=${user.id}&sort=createdAt:desc`, {
-      headers: {
-        Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+    const response = await fetch(
+      `${STRAPI_URL}/api/pantry-items?filters[owner][id][$eq]=${user.id}&sort=createdAt:desc`,
+      {
+        headers: {
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        },
+        cache: "no-store",
       },
-      cache: "no-store",
-    });
+    );
 
     if (!response.ok) {
       throw new Error("Failed to fetch pantry items");
