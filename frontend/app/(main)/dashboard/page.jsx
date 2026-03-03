@@ -74,7 +74,7 @@ const DashboardPage = async () => {
                       {recipeOfTheDay.strMeal}
                     </h2>
                     <p className="text-stone-600 mb-6 line-clamp-3 font-light text-lg">
-                      {recipeOfTheDay.strInstructions?.substring(0, 200)}...
+                      {recipeOfTheDay.strInstructions?.length < 200 ? recipeOfTheDay?.strInstructions : recipeOfTheDay.strInstructions?.substring(0, 200)}...
                     </p>
                     <Button
                       variant="primary"

@@ -40,5 +40,3 @@ export const proTierLimit = aj.withRule(
     capacity: 1000,
   }),
 );
-
-

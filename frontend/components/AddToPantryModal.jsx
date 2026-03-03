@@ -30,7 +30,7 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess}) => {
         onClose();
     }
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose} >
+    <Dialog open={isOpen} onOpenChange={handleClose} > 
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
