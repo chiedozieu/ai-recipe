@@ -52,7 +52,7 @@ export async function scanPantryImage(formData) {
     const base64Image = buffer.toString("base64");
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5.flash-lite",
+      model: "gemini-3.1-flash-lite-preview",
     });
 
     const prompt = `You are a professional chef and ingredient recognition expert. Analyze this image of a pantry/fridge and identify all visible food ingredients.
@@ -75,8 +75,8 @@ Rules:
 - Common pantry staples are acceptable (salt, pepper, oil)`;
 
     const result = await model.generateContent([
+      prompt,
       {
-        prompt,
         inlineData: {
           mimeType: imageFile.type,
           data: base64Image,
