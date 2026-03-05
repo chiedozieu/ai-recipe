@@ -112,7 +112,7 @@ Rules:
       message: `Found ${ingredients.length} ingredients in the image.`,
     };
   } catch (error) {
-    console.error(error, "Error scanning pantry image");
+    console.error(error, "❌ Error scanning pantry image");
     throw new Error(error.message || "Failed to scan pantry image");
   }
 }
@@ -160,7 +160,7 @@ export async function saveToPantry(formData) {
       message: `Saved ${savedItems.length} items to pantry`,
     };
   } catch (error) {
-    console.error(error, "Error saving to pantry");
+    console.error(error, "❌ Error saving to pantry");
     throw new Error(error.message || "Failed to save to pantry");
   }
 }
@@ -202,7 +202,7 @@ export async function addPantryItemManually(formData) {
       message: "Item added successfully",
     };
   } catch (error) {
-    console.error(error, "Error adding pantry item");
+    console.error(error, "❌ Error adding pantry item");
     throw new Error(error.message || "Failed to add pantry item");
   }
 }
@@ -235,7 +235,7 @@ export async function getPantryItems() {
       scansLimit: isPro ? "unlimited" : 10,
     };
   } catch (error) {
-    console.error(error, "Error fetching pantry items");
+    console.error(error, "❌ Error fetching pantry items");
     throw new Error(error.message || "Failed to fetch pantry items");
   }
 }
@@ -263,7 +263,7 @@ export async function deletePantryItems(formData) {
       message: "Item removed from pantry",
     };
   } catch (error) {
-    console.error(error, "Error deleting pantry items");
+    console.error(error, "❌ Error deleting pantry items");
     throw new Error(error.message || "Failed to delete pantry items");
   }
 }
@@ -302,7 +302,7 @@ export async function updatePantryItems(formData) {
       message: "Item updated successfully",
     };
   } catch (error) {
-    console.error(error, "Error updating pantry items");
+    console.error(error, "❌ Error updating pantry items");
     throw new Error(error.message || "Failed to update pantry items");
   }
 }

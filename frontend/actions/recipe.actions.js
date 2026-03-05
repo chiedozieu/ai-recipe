@@ -117,9 +117,9 @@ Rules:
 
     return {
       success: true,
-      recipe: recipeSuggestions,
+      recipes: recipeSuggestions,
       ingredientsUsed: ingredients,
-      recommendationLimit: isPro ? "unlimited" : 5,
+      recommendationsLimit: isPro ? "unlimited" : 5,
       message: `Found ${recipeSuggestions.length} recipes you can make. `,
     };
   } catch (error) {

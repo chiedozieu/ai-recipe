@@ -16,7 +16,7 @@ export async function getRecipeOfTheDay() {
       recipe: data.meals[0],
     };
   } catch (error) {
-    console.error(error, "Error fetching recipe of the day");
+    console.error(error, "❌ Error fetching recipe of the day");
     throw new Error(error.message || "Failed to fetch recipe of the day");
   }
 }
@@ -36,7 +36,7 @@ export async function getCategories() {
       categories: data.meals || [],
     };
   } catch (error) {
-    console.error(error, "Error fetching categories");
+    console.error(error, "❌ Error fetching categories");
     throw new Error(error.message || "Failed to fetch categories");
   }
 }
@@ -55,7 +55,7 @@ export async function getAreas() {
       areas: data.meals || [],
     };
   } catch (error) {
-    console.error(error, "Error fetching areas");
+    console.error(error, "❌ Error fetching areas");
     throw new Error(error.message || "Failed to fetch areas");
   }
 }
@@ -75,7 +75,7 @@ export async function getMealsByCategory(category) {
       category,
     };
   } catch (error) {
-    console.error(error, "Error fetching meals by category");
+    console.error(error, "❌ Error fetching meals by category");
     throw new Error(error.message || "Failed to fetch meals by category");
   }
 }
@@ -95,7 +95,7 @@ export async function getMealsByArea(area) {
       area,
     };
   } catch (error) {
-    console.error(error, "Error fetching meals by area");
+    console.error(error, "❌ Error fetching meals by area");
     throw new Error(error.message || "Failed to fetch meals by area");
   }
 }
