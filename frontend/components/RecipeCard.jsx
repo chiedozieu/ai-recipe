@@ -15,12 +15,12 @@ import { Button } from "./ui/button";
 
 const RecipeCard = ({ recipe, variant = "default" }) => {
   const getRecipeData = () => {
-    // for mealdb recipes (category/cuisine pages)
+    // for mealdb recipes (category/cuisine pages) 
     if (recipe.strMeal) {
       return {
         title: recipe.strMeal,
         image: recipe.strMealThumb,
-        href: `/recipes?cook=${encodeURIComponent(recipe.strMeal)}`,
+        href: `/recipe?cook=${encodeURIComponent(recipe.strMeal)}`,
         showImage: true,
       };
     }
@@ -172,7 +172,7 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
         </CardContent>
         <CardFooter>
           <Link href={data.href} className="w-full">
-            <Button className="w-full bg-green-600 hover:bg-green-700 text-white gap-2">
+            <Button className="cursor-pointer w-full bg-green-600 hover:bg-green-700 text-white gap-2">
               <ChefHatIcon className="h-4 w-4" />
               View Full Recipe
             </Button>
