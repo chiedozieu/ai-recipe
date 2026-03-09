@@ -201,4 +201,5 @@ export const DUMMY_RECIPE_RESPONSE = {
   recommendationsUsed: 3,
   recommendationsLimit: 5,
   message: "Recipe loaded successfully!",
+  
 };

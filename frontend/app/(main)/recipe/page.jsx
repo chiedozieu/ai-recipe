@@ -5,17 +5,24 @@ import {
   removeRecipeFromCollection,
   saveRecipeToCollection,
 } from "@/actions/recipe.actions";
+import ProLockedSection from "@/components/ProLockedSection";
+import { RecipePDF } from "@/components/RecipePDF";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import {
   AlertCircleIcon,
   ArrowLeftIcon,
   BookmarkCheckIcon,
   BookmarkIcon,
+  CheckCircle2,
+  CheckCircle2Icon,
   ClockIcon,
   CookingPotIcon,
+  Download,
   FlameIcon,
+  LightbulbIcon,
   ListChecksIcon,
   Loader2Icon,
   LoaderIcon,
@@ -294,6 +301,23 @@ function RecipeContent() {
                 )}
               </Button>
               {/* pdf download button */}
+              <PDFDownloadLink
+                document={<RecipePDF recipe={recipe} />}
+                fileName={`${recipe.title
+                  .replace(/\s+/g, "-")
+                  .toLowerCase()}.pdf`}
+              >
+                {({ loading }) => (
+                  <Button
+                    variant="outline"
+                    className="border-2 cursor-pointer border-orange-600 text-orange-700 hover:bg-orange-50 gap-2"
+                    disabled={loading}
+                  >
+                    <Download className="w-4 h-4" />
+                    {loading ? "Preparing PDF..." : "Download PDF"}
+                  </Button>
+                )}
+              </PDFDownloadLink>
             </div>
           </div>
         </div>
@@ -335,51 +359,227 @@ function RecipeContent() {
                 </div>
               ))}
 
-              {/* nutrition info */}
+              {/* Nutrition Info */}
               {recipe.nutrition && (
                 <div className="mt-6 pt-6 border-t-2 border-stone-200">
-                  <h3 className="font-bold text-stone-900 mb-3 uppercase tracking-wide text-sm">
+                  <h3 className="font-bold text-stone-900 mb-3 uppercase tracking-wide text-sm flex items-center gap-2">
                     Nutrition (per serving)
+                    {!recipeData.isPro && (
+                      <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">
+                        PRO
+                      </span>
+                    )}
                   </h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-orange-50 p-3 text-center border-2 border-orange-100">
-                      <div className="text-2xl font-bold text-orange-600">
-                        {recipe.nutrition.calories}
+
+                  <ProLockedSection
+                    isPro={recipeData.isPro}
+                    lockText="Nutrition info is Pro-only"
+                  >
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-orange-50 p-3 text-center border-2 border-orange-100">
+                        <div className="text-2xl font-bold text-orange-600">
+                          {recipe.nutrition.calories}
+                        </div>
+                        <div className="text-xs text-stone-500 font-bold uppercase tracking-wide">
+                          Calories
+                        </div>
                       </div>
-                      <div className="text-xs text-stone-500 fond-bold uppercase tracking-wide">Calories</div>
+
+                      <div className="bg-stone-50 p-3 text-center border-2 border-stone-100">
+                        <div className="text-2xl font-bold text-stone-900">
+                          {recipe.nutrition.protein}
+                        </div>
+                        <div className="text-xs text-stone-500 font-bold uppercase tracking-wide">
+                          Protein
+                        </div>
+                      </div>
+
+                      <div className="bg-stone-50 p-3 text-center border-2 border-stone-100">
+                        <div className="text-2xl font-bold text-stone-900">
+                          {recipe.nutrition.carbs}
+                        </div>
+                        <div className="text-xs text-stone-500 font-bold uppercase tracking-wide">
+                          Carbs
+                        </div>
+                      </div>
+
+                      <div className="bg-stone-50 p-3 text-center border-2 border-stone-100">
+                        <div className="text-2xl font-bold text-stone-900">
+                          {recipe.nutrition.fat}
+                        </div>
+                        <div className="text-xs text-stone-500 font-bold uppercase tracking-wide">
+                          Fat
+                        </div>
+                      </div>
                     </div>
-                    <div className="bg-orange-50 p-3 text-center border-2 border-orange-100">
-                      <div className="text-2xl font-bold text-orange-600">
-                        {recipe.nutrition.protein}
-                      </div>
-                      <div className="text-xs text-stone-500 fond-bold uppercase tracking-wide">
-                        Protein
-                      </div>
-                    </div>
-                    <div className="bg-orange-50 p-3 text-center border-2 border-orange-100">
-                      <div className="text-2xl font-bold text-orange-600">
-                        {recipe.nutrition.carbs}
-                      </div>
-                      <div className="text-xs text-stone-500 fond-bold uppercase tracking-wide">
-                        Carbs
-                      </div>
-                    </div>
-                    <div className="bg-orange-50 p-3 text-center border-2 border-orange-100">
-                      <div className="text-2xl font-bold text-orange-600">
-                        {recipe.nutrition.fat}
-                      </div>
-                      <div className="text-xs text-stone-500 fond-bold uppercase tracking-wide">
-                        Fat
-                      </div>
-                    </div>
-                   
-                  </div>
+                  </ProLockedSection>
                 </div>
               )}
             </div>
           </div>
           {/* right column: instructions & tips */}
-          <div className="lg:col-span-2 space-y-6"></div>
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white border-2 border-stone-200 p-8">
+              <h2 className="text-2xl font-bold text-stone-900 mb-6">
+                Step-by-Step Instructions
+              </h2>
+              <div className="">
+                {recipe.instructions.map((step, index) => (
+                  <div
+                    key={step.step}
+                    className={`relative pl-12 pb-8 ${index !== recipe.instructions.length - 1 ? "border-l-2 border-orange-300 ml-5" : "ml-5"}`}
+                  >
+                    {/* step number */}
+                    <div className="absolute -left-5 top-0 w-10 h-10 bg-orange-600 text-white flex items-center justify-center font-bold border-2 border-orange-700">
+                      {step.step}
+                    </div>
+                    <div className="">
+                      <h3 className="font-bold text-lg text-stone-900 mb-2">
+                        {step.title}
+                      </h3>
+                      <p className="text-stone-700 font-light mb-3">
+                        {step.instruction}
+                      </p>
+                      {step.tip && (
+                        <div className="bg-orange-50 border-2 gap-2 border-orange-100 p-3 flex group">
+                          <LightbulbIcon
+                            className="size-7 text-orange-600 group-hover:animate-pulse"
+                            fill="red"
+                          />
+                          <p className="text-stone-600 text-sm font-light">
+                            Tip: {step.tip}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 p-6 bg-linear-to-br from-green-50 to-emerald-50 border-2 border-green-200">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="size-8 text-green-600 shrink-0 mt-0.5" />
+                  <div className="">
+                    <h3 className="font-bold text-green-900 mb-1">
+                      You have successfully cooked this recipe!
+                    </h3>
+                    <p className="text-sm text-green-800 font-light">
+                      Plate your dish and enjoy your delicious {recipe.title}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              {/* tips */}
+              {/* <div className="mt-8 p-6 bg-linear-to-br from-orange-50 to-orange-100 border-2 border-orange-200 group">
+                <div className="flex items-start gap-2">
+                  <LightbulbIcon
+                    className="size-7 text-orange-600"
+                    fill="red"
+                  />
+                  <h3 className="font-bold text-orange-900 text-2xl pb-2">
+                    Chef&apos;s Tip & tricks
+                  </h3>
+                </div>
+                {recipe.tips &&
+                  recipe.tips.map((tip, index) => (
+                    <div
+                      key={index}
+                      className="text-sm font-light gap-2 space-y-2"
+                    >
+                      <div className="flex items-start p-1 gap-3">
+                        <CheckCircle2 className="size-6 text-orange-600 shrink-0 mt-0.5" />
+                        <span className="text-orange-800">{tip}</span>
+                      </div>
+                    </div>
+                  ))}
+              </div> */}
+
+              {/* General Tips */}
+              {recipe.tips && recipe.tips.length > 0 && (
+                <div className="bg-linear-to-br from-orange-50 to-orange-100 p-8 border-2 border-orange-200">
+                  <h2 className="text-2xl font-bold text-stone-900 mb-4 flex items-center gap-2">
+                    <LightbulbIcon className="w-6 h-6 text-orange-600 fill-orange-600" />
+                    Chef&apos;s Tips & Tricks
+                    {!recipeData.isPro && (
+                      <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">
+                        PRO
+                      </span>
+                    )}
+                  </h2>
+
+                  <ProLockedSection
+                    isPro={recipeData.isPro}
+                    lockText="Chef tips are Pro-only"
+                    ctaText="Unlock Pro Tips →"
+                  >
+                    <ul className="space-y-3">
+                      {recipe.tips.map((tip, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-3 text-stone-700"
+                        >
+                          <CheckCircle2Icon className="w-5 h-5 text-orange-600 shrink-0 mt-0.5" />
+                          <span className="font-light">{tip}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </ProLockedSection>
+                </div>
+              )}
+
+              {/* substitutions */}
+
+              {recipe.substitutions && recipe.substitutions.length > 0 && (
+                <div className="bg-white p-8 border-2 border-stone-200">
+                  <h2 className="text-2xl font-bold text-stone-900 mb-4 flex items-center gap-2">
+                    Ingredient Substitutions
+                    {!recipeData.isPro && (
+                      <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">
+                        PRO
+                      </span>
+                    )}
+                  </h2>
+
+                  <p className="text-stone-600 mb-6 text-sm font-light">
+                    Don&apos;t have everything? Here are some alternatives you
+                    can use:
+                  </p>
+
+                  <ProLockedSection
+                    isPro={recipeData.isPro}
+                    lockText="Substitutions are Pro-only"
+                  >
+                    <div className="space-y-4">
+                      {recipe.substitutions.map((sub, i) => (
+                        <div
+                          key={i}
+                          className="border-b-2 border-stone-100 pb-4 last:border-0 last:pb-0"
+                        >
+                          <h3 className="font-bold text-stone-900 mb-2">
+                            Instead of{" "}
+                            <span className="text-orange-600">
+                              {sub.original}
+                            </span>
+                            :
+                          </h3>
+                          <div className="flex flex-wrap gap-2">
+                            {sub.alternatives.map((alt, j) => (
+                              <Badge
+                                key={j}
+                                variant="outline"
+                                className="text-stone-600 border-2 border-stone-200"
+                              >
+                                {alt}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </ProLockedSection>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

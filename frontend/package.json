@@ -12,6 +12,7 @@
     "@arcjet/next": "^1.1.0",
     "@clerk/nextjs": "^6.37.5",
     "@google/generative-ai": "^0.24.1",
+    "@react-pdf/renderer": "^4.3.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.574.0",
