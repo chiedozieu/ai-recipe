@@ -14,6 +14,71 @@ const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
+// validation so strapi doesn't crash*********************
+const ALLOWED_CATEGORIES = ["breakfast", "lunch", "dinner", "snack", "dessert"];
+
+const ALLOWED_CUISINES = [
+  "italian",
+  "chinese",
+  "mexican",
+  "indian",
+  "american",
+  "thai",
+  "japanese",
+  "mediterranean",
+  "french",
+  "korean",
+  "vietnamese",
+  "spanish",
+  "greek",
+  "turkish",
+  "moroccan",
+  "brazilian",
+  "caribbean",
+  "middle-eastern",
+  "british",
+  "german",
+  "portuguese",
+  "other",
+];
+
+function sanitizeRecipeData(data) {
+  const sanitized = { ...data };
+
+  // category validation
+  if (!ALLOWED_CATEGORIES.includes(sanitized.category)) {
+    sanitized.category = "dinner";
+  }
+
+  // cuisine validation
+  if (!ALLOWED_CUISINES.includes(sanitized.cuisine)) {
+    sanitized.cuisine = "other";
+  }
+
+  // convert numeric fields
+  sanitized.prepTime = Number(sanitized.prepTime) || 10;
+  sanitized.cookTime = Number(sanitized.cookTime) || 10;
+  sanitized.servings = Number(sanitized.servings) || 2;
+
+  // ensure arrays exist
+  sanitized.ingredients = Array.isArray(sanitized.ingredients)
+    ? sanitized.ingredients
+    : [];
+
+  sanitized.instructions = Array.isArray(sanitized.instructions)
+    ? sanitized.instructions
+    : [];
+
+  sanitized.tips = Array.isArray(sanitized.tips) ? sanitized.tips : [];
+
+  sanitized.substitutions = Array.isArray(sanitized.substitutions)
+    ? sanitized.substitutions
+    : [];
+
+  return sanitized;
+}
+//***************************************************** */
+
 export const getRecipeByPantryIngredients = async () => {
   try {
     const user = await checkUser();
@@ -108,7 +173,7 @@ Rules:
         .replace(/```\n?/g, "")
         .trim();
 
-      recipeSuggestions = JSON.parse(cleanText);
+      recipeSuggestions = sanitizeRecipeData(JSON.parse(cleanText));
     } catch (parseError) {
       console.error("Failed to parse Gemini response:", text);
       throw new Error(
@@ -163,7 +228,10 @@ async function fetchRecipeImage(recipeName) {
     }
 
     const data = await response.json();
-    if (!data.results && data.results.length > 0) {
+
+    if (data.results && data.results.length > 0) {
+      const photo = data.results[0];
+      console.log("✅ Found Unsplash image:", photo.urls.regular);
       return photo.urls.regular;
     }
     return "";
@@ -184,7 +252,8 @@ export const getOrGenerateRecipe = async (formData) => {
     if (!recipeName) {
       throw new Error("Recipe name is required");
     }
-     const isPro = user.subscriptionTier === "pro";
+    const isPro = user.subscriptionTier === "pro";
+
     // normalize the title (e.g., "baked salmon" -> "Baked Salmon")
     const normalizedTitle = normalizeTitle(recipeName);
 
@@ -312,7 +381,7 @@ Guidelines:
         .replace(/```\n?/g, "")
         .trim();
 
-      recipeData = JSON.parse(cleanText);
+      recipeData = sanitizeRecipeData(JSON.parse(cleanText));
     } catch (parseError) {
       console.error("Failed to parse Gemini response:", text);
       throw new Error(
@@ -327,14 +396,14 @@ Guidelines:
     const cuisine = recipeData.cuisine.toLowerCase();
 
     // step-3 fetch image from unsplash
-    const imageUrl = await fetchRecipeImage(normalizeTitle);
+    const imageUrl = await fetchRecipeImage(normalizedTitle);
     // step-4 save recipe to DB
     const strapiRecipeData = {
       data: {
-        title: normalizeTitle,
+        title: normalizedTitle,
         description: recipeData.description,
-        category,
         cuisine,
+        category,
         ingredients: recipeData.ingredients,
         instructions: recipeData.instructions,
         prepTime: Number(recipeData.prepTime),
@@ -362,22 +431,22 @@ Guidelines:
       console.error(errorText, "❌ Error creating recipe");
       throw new Error("Failed to create recipe");
     }
-    const createRecipeData = await createRecipeResponse.json();
+    const createdRecipe = await createRecipeResponse.json();
 
     return {
       success: true,
       recipe: {
         ...recipeData,
-        title: normalizeTitle,
+        title: normalizedTitle,
         category,
         cuisine,
-        image: imageUrl || "",
+        imageUrl: imageUrl || "",
       },
-      recipeId: createRecipeData.data.id,
+      recipeId: createdRecipe.data.id,
       isSaved: false,
       fromDatabase: false,
       recommendationsLimit: isPro ? "unlimited" : 5,
-      message: "Recipe generated and saved successfully!",
+      message: `${isSaved ? "Saved" : "Recipe generated and saved successfully!"}`,
     };
   } catch (error) {
     console.error(error, "❌ Error generating recipe suggestions");

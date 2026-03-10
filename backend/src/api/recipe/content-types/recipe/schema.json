@@ -18,10 +18,9 @@
     "description": {
       "type": "blocks"
     },
-    "cusine": {
+    "cuisine": {
       "type": "enumeration",
       "enum": [
-        "nigerian",
         "italian",
         "chinese",
         "mexican",
@@ -43,7 +42,6 @@
         "british",
         "german",
         "portuguese",
-        "igbo",
         "other"
       ]
     },

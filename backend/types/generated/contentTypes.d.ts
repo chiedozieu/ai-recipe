@@ -523,9 +523,8 @@ export interface ApiRecipeRecipe extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    cusine: Schema.Attribute.Enumeration<
+    cuisine: Schema.Attribute.Enumeration<
       [
-        'nigerian',
         'italian',
         'chinese',
         'mexican',
@@ -547,7 +546,6 @@ export interface ApiRecipeRecipe extends Struct.CollectionTypeSchema {
         'british',
         'german',
         'portuguese',
-        'igbo',
         'other',
       ]
     >;

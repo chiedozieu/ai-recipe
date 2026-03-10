@@ -8,6 +8,7 @@ import UserDropdown from "./UserDropdown";
 import { checkUser } from "@/lib/checkUser";
 import PricingModal from "./PricingModal";
 import { Badge } from "./ui/badge";
+import HowToCookModal from "./HowToCookModal";
 
 const Header = async () => {
   const user = await checkUser();
@@ -37,6 +38,7 @@ const Header = async () => {
           {/* Show the user button when the user is signed in */}
           <SignedIn>
             {/* How To Cook */}
+            <HowToCookModal />
             {user && (
               <PricingModal subscription={user.subscription}>
                 <Badge

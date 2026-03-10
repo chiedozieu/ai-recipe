@@ -19,19 +19,13 @@ import {
   CheckCircle2,
   CheckCircle2Icon,
   ClockIcon,
-  CookingPotIcon,
   Download,
   FlameIcon,
   LightbulbIcon,
-  ListChecksIcon,
   Loader2Icon,
-  LoaderIcon,
   RefreshCcwIcon,
   SaladIcon,
-  ScaleIcon,
-  ShoppingBasketIcon,
   UsersIcon,
-  UtensilsCrossedIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,6 +35,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 function RecipeContent() {
+  
   const searchParams = useSearchParams();
   const recipeName = searchParams.get("cook");
   const router = useRouter();
@@ -119,14 +114,14 @@ function RecipeContent() {
       setRecipe(recipeData.recipe);
       setRecipeId(recipeData.recipe.id);
       setIsSaved(recipeData.isSaved);
-      if (recipeData.formDatabase) {
+      if (recipeData.fromDatabase) {
         toast.success("Recipe loaded from database");
       } else {
         toast.success("New recipe generated and saved!");
       }
     }
   }, [recipeData]);
-
+  // console.log("ISPRO", recipeData.isPro)
   // No recipe name in url
   if (!recipeName) {
     return (
@@ -495,12 +490,12 @@ function RecipeContent() {
 
               {/* General Tips */}
               {recipe.tips && recipe.tips.length > 0 && (
-                <div className="bg-linear-to-br from-orange-50 to-orange-100 p-8 border-2 border-orange-200">
+                <div className="bg-linear-to-br from-orange-50 to-orange-100 p-8 border-2 border-orange-200 mt-8 mb-8">
                   <h2 className="text-2xl font-bold text-stone-900 mb-4 flex items-center gap-2">
                     <LightbulbIcon className="w-6 h-6 text-orange-600 fill-orange-600" />
                     Chef&apos;s Tips & Tricks
                     {!recipeData.isPro && (
-                      <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">
+                      <span className="text-xs bg-orange-100 text-orange-900 px-2 py-0.5 rounded-full font-semibold">
                         PRO
                       </span>
                     )}
@@ -515,7 +510,7 @@ function RecipeContent() {
                       {recipe.tips.map((tip, i) => (
                         <li
                           key={i}
-                          className="flex items-start gap-3 text-stone-700"
+                          className="flex items-start gap-3 text-orange-700"
                         >
                           <CheckCircle2Icon className="w-5 h-5 text-orange-600 shrink-0 mt-0.5" />
                           <span className="font-light">{tip}</span>
