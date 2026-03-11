@@ -525,6 +525,7 @@ export interface ApiRecipeRecipe extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     cuisine: Schema.Attribute.Enumeration<
       [
+        'nigerian',
         'italian',
         'chinese',
         'mexican',

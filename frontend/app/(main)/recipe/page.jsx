@@ -35,7 +35,6 @@ import React, { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 function RecipeContent() {
-  
   const searchParams = useSearchParams();
   const recipeName = searchParams.get("cook");
   const router = useRouter();
@@ -101,7 +100,7 @@ function RecipeContent() {
 
   // fetch recipe on mount
   useEffect(() => {
-    if (recipeName && !recipe) {
+    if (recipeName) {
       const formData = new FormData();
       formData.append("recipeName", recipeName);
       fetchRecipe(formData);
@@ -463,30 +462,6 @@ function RecipeContent() {
                   </div>
                 </div>
               </div>
-              {/* tips */}
-              {/* <div className="mt-8 p-6 bg-linear-to-br from-orange-50 to-orange-100 border-2 border-orange-200 group">
-                <div className="flex items-start gap-2">
-                  <LightbulbIcon
-                    className="size-7 text-orange-600"
-                    fill="red"
-                  />
-                  <h3 className="font-bold text-orange-900 text-2xl pb-2">
-                    Chef&apos;s Tip & tricks
-                  </h3>
-                </div>
-                {recipe.tips &&
-                  recipe.tips.map((tip, index) => (
-                    <div
-                      key={index}
-                      className="text-sm font-light gap-2 space-y-2"
-                    >
-                      <div className="flex items-start p-1 gap-3">
-                        <CheckCircle2 className="size-6 text-orange-600 shrink-0 mt-0.5" />
-                        <span className="text-orange-800">{tip}</span>
-                      </div>
-                    </div>
-                  ))}
-              </div> */}
 
               {/* General Tips */}
               {recipe.tips && recipe.tips.length > 0 && (

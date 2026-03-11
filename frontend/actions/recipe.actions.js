@@ -18,6 +18,7 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const ALLOWED_CATEGORIES = ["breakfast", "lunch", "dinner", "snack", "dessert"];
 
 const ALLOWED_CUISINES = [
+  "nigerian",
   "italian",
   "chinese",
   "mexican",
@@ -309,7 +310,7 @@ Return ONLY a valid JSON object with this exact structure (no markdown, no expla
   "title": "${normalizedTitle}",
   "description": "Brief 2-3 sentence description of the dish",
   "category": "Must be ONE of these EXACT values: breakfast, lunch, dinner, snack, dessert",
-  "cuisine": "Must be ONE of these EXACT values: italian, chinese, mexican, indian, american, thai, japanese, mediterranean, french, korean, vietnamese, spanish, greek, turkish, moroccan, brazilian, caribbean, middle-eastern, british, german, portuguese, other",
+  "cuisine": "Must be ONE of these EXACT values: nigerian, italian, chinese, mexican, indian, american, thai, japanese, mediterranean, french, korean, vietnamese, spanish, greek, turkish, moroccan, brazilian, caribbean, middle-eastern, british, german, portuguese, other",
   "prepTime": "Time in minutes (number only)",
   "cookTime": "Time in minutes (number only)",
   "servings": "Number of servings (number only)",
@@ -446,7 +447,7 @@ Guidelines:
       isSaved: false,
       fromDatabase: false,
       recommendationsLimit: isPro ? "unlimited" : 5,
-      message: `${isSaved ? "Saved" : "Recipe generated and saved successfully!"}`,
+      message: "Recipe generated and saved successfully!",
     };
   } catch (error) {
     console.error(error, "❌ Error generating recipe suggestions");
@@ -578,3 +579,40 @@ export const removeRecipeFromCollection = async (formData) => {
     throw new Error(error.message || "Failed to remove recipe from collection");
   }
 };
+
+// get user's saved recipes
+export async function getSavedRecipes() {
+  try {
+    const user = await checkUser();
+    if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+    const response = await fetch(
+      `${STRAPI_URL}/api/saved-recipes?filters[user][id][$eq]=${user.id}&populate[recipe][populate]=*&sort=savedAt:desc`,
+      {
+        headers: {
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        },
+        cache: "no-store",
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch saved recipes");
+    }
+    const data = await response.json();
+    // extract recipes from saved recipes relations
+    const recipes = data.data
+      .map((savedRecipe) => savedRecipe.recipe)
+      .filter(Boolean);// filter out null values
+    return {
+      success: true,
+      recipes,
+      count: recipes.length, 
+    };
+  } catch (error) {
+    console.error(error, "❌ Error fetching saved recipes");
+    throw new Error(error.message || "Failed to fetch saved recipes");
+  }
+}

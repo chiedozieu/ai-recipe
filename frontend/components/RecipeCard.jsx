@@ -15,7 +15,7 @@ import { Button } from "./ui/button";
 
 const RecipeCard = ({ recipe, variant = "default" }) => {
   const getRecipeData = () => {
-    // for mealdb recipes (category/cuisine pages) 
+    // for mealdb recipes (category/cuisine pages)
     if (recipe.strMeal) {
       return {
         title: recipe.strMeal,
@@ -39,6 +39,22 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
         image: recipe.image, // image support
         href: `/recipes?cook=${encodeURIComponent(recipe.title)}`,
         showImage: !!recipe.imageUrl, // show if image exists
+      };
+    }
+
+    // strapi recipes (for saved recipes, search results)
+    if (recipe) {
+      return {
+        title: recipe.title,
+        description: recipe.description,
+        category: recipe.category,
+        cuisine: recipe.cuisine,
+        prepTime: recipe.prepTime,
+        cookTime: recipe.cookTime,
+        servings: recipe.servings,
+        image: recipe.image,
+        href: `/recipe?cook=${encodeURIComponent(recipe.title)}`,
+        showImage: !!recipe.imageUrl,
       };
     }
 
@@ -179,6 +195,33 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
           </Link>
         </CardFooter>
       </Card>
+    );
+  }
+
+  if (variant === "list") {
+    return (
+      <Link href={data.href} className="">
+        <Card className="rounded-none border-stone-200 hover:shadow-lg hover:border-orange-200 transition-all cursor-pointer group overflow-hidden py-0 ">
+          <div className="flex flex-col md:flex-row">
+            {/* image if available */}
+            {data.showImage && data.image ? (
+              <div className="relative w-full md:w-48 aspect-video md:aspect-square shrink-0">
+                <Image
+                  className="object-cover group-hover:scale-105 transition-all duration-500 ease-in-out"
+                  src={data.imageUrl}
+                  alt={data.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 192px"
+                />
+              </div>
+            ) : (
+              <div className="relative w-full md:w-48 aspect-video md:aspect-square shrink-0 bg-linear-to-br from-orange-400 to-amber-400 flex items-center justify-center">
+                <ChefHatIcon className="h-12 w-12 text-white/30" />
+              </div>
+            )}
+          </div>
+        </Card>
+      </Link>
     );
   }
 

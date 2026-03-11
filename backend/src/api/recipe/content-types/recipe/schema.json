@@ -21,6 +21,7 @@
     "cuisine": {
       "type": "enumeration",
       "enum": [
+        "nigerian",
         "italian",
         "chinese",
         "mexican",

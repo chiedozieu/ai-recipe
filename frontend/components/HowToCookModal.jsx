@@ -29,6 +29,7 @@ const HowToCookModal = () => {
     e.preventDefault();
     router.push(`/recipe?cook=${encodeURIComponent(recipeName.trim())}`);
     handleOpenChange(false);
+    
   };
 
   return (
@@ -79,8 +80,18 @@ const HowToCookModal = () => {
                 "Cheeseburger",
                 "Virginia Peanut Soup",
                 "Jollof Rice",
+                "Dubai Chocolate",
+                "Marry Me Chicken",
+                "Feijoada",
+                "Tourtière",
+                "Spaghetti Bolognese",
+                "Egg Rolls",
+                "chinese fried rice",
+                "guacamole",
+                "New York-Style Pizza",
               ].map((exampleRecipe) => (
                 <button
+                  type="button"
                   key={exampleRecipe}
                   onClick={() => setRecipeName(exampleRecipe)}
                   className="px-2 py-1 bg-white text-orange-700 border border-orange-200 rounded full text-xs hover:bg-orange-100 transition-colors"
@@ -91,17 +102,15 @@ const HowToCookModal = () => {
             </div>
           </div>
 
-          <div className="">
-              <Button
-                variant="primary"
-                type="submit"
-                disabled={!recipeName.trim()}
-                className={`${recipeName.trim() && "hover:cursor-pointer"} flex gap-2 w-full h-12 items-center justify-center`}
-              >
-                <CookingPotIcon className="size-4" />
-                <p className="text-lg">Cook</p>
-              </Button>
-          </div>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={!recipeName.trim()}
+            className={`${recipeName.trim() && "hover:cursor-pointer"} flex gap-2 w-full h-12 items-center justify-center`}
+          >
+            <CookingPotIcon className="size-4" />
+            <p className="text-lg">Cook</p>
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

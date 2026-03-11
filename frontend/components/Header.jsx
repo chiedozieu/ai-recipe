@@ -20,7 +20,7 @@ const Header = async () => {
         </Link>
         <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-stone-600">
           <Link
-            href="/recipe"
+            href="/recipes"
             className="text-stone-600 hover:text-orange-600 flex gap-1.5 items-center transition-colors duration-300"
           >
             <CookieIcon className="size-4" />
