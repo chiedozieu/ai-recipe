@@ -120,8 +120,9 @@ function RecipeContent() {
       }
     }
   }, [recipeData]);
-  // console.log("ISPRO", recipeData.isPro)
-  // No recipe name in url
+  // console.log("recipeData.isPro", recipeData.isPro)
+  console.log("recipeData", recipeData)
+
   if (!recipeName) {
     return (
       <div className="min-h-screen bg-stone-50 pt-24 pb-16 ">

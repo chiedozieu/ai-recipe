@@ -174,7 +174,7 @@ Rules:
         .replace(/```\n?/g, "")
         .trim();
 
-      recipeSuggestions = sanitizeRecipeData(JSON.parse(cleanText));
+      recipeSuggestions = JSON.parse(cleanText);
     } catch (parseError) {
       console.error("Failed to parse Gemini response:", text);
       throw new Error(
@@ -255,9 +255,9 @@ export const getOrGenerateRecipe = async (formData) => {
     }
     const isPro = user.subscriptionTier === "pro";
 
+
     // normalize the title (e.g., "baked salmon" -> "Baked Salmon")
     const normalizedTitle = normalizeTitle(recipeName);
-
     // step-1 check if recipe already exists in DB (case insensitive search)
     const searchResponse = await fetch(
       `${STRAPI_URL}/api/recipes?filters[title][$eqi]=${encodeURIComponent(normalizedTitle)}&populate=*`,
@@ -289,8 +289,10 @@ export const getOrGenerateRecipe = async (formData) => {
         return {
           success: true,
           recipe: searchData.data[0],
+          recipeId: searchData.data[0].id,
           isSaved: isSaved,
           fromDatabase: true,
+          isPro,
           message: "Recipe loaded successfully!",
         };
       }
@@ -441,6 +443,7 @@ Guidelines:
         title: normalizedTitle,
         category,
         cuisine,
+        isPro,
         imageUrl: imageUrl || "",
       },
       recipeId: createdRecipe.data.id,

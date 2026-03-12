@@ -25,10 +25,10 @@ const SavedRecipesPage = () => {
   }, []);
 
   const recipes = recipeData?.recipes || [];
-console.log("data",recipes) // debug tomorrow morning 12th
+  // console.log("recipes",recipes) // debug tomorrow morning 12th
   return (
-    <div className="min-h-screen bg-stone-50 pt-24 pb-16 px-4">
-      <div className="container mx-auto max-w-7xl">
+    <div className="mx-auto min-h-screen bg-stone-50 pt-24 pb-16 px-4">
+      <div className="mx-auto max-w-6xl">
         <div className="flex items-center gap-1 mb-8">
           <BookmarkIcon className="size-25 text-orange-600" />
           <div className="">
@@ -52,11 +52,13 @@ console.log("data",recipes) // debug tomorrow morning 12th
         {/* saved recipes */}
         {!loading && recipes.length > 0 && (
           <div className="grid md:grid-cols-2 gap-6">
-            {
-                recipes.map((recipe) => (
-                  <RecipeCard key={recipe.documentId} recipe={recipe} variant="list" />
-                ))
-            }
+            {recipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.documentId}
+                recipe={recipe}
+                variant="list"
+              />
+            ))}
           </div>
         )}
 

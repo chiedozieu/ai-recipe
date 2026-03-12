@@ -37,7 +37,7 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
         matchPercentage: recipe.matchPercentage,
         missingIngredients: recipe.missingIngredients || [],
         image: recipe.image, // image support
-        href: `/recipes?cook=${encodeURIComponent(recipe.title)}`,
+        href: `/recipe?cook=${encodeURIComponent(recipe.title)}`,
         showImage: !!recipe.imageUrl, // show if image exists
       };
     }
@@ -52,7 +52,7 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
         prepTime: recipe.prepTime,
         cookTime: recipe.cookTime,
         servings: recipe.servings,
-        image: recipe.image,
+        image: recipe.imageUrl,
         href: `/recipe?cook=${encodeURIComponent(recipe.title)}`,
         showImage: !!recipe.imageUrl,
       };
@@ -61,6 +61,7 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
     return {};
   };
   const data = getRecipeData();
+
 
   if (variant === "grid") {
     return (
@@ -178,7 +179,7 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
                 <Badge
                   key={index}
                   variant="outline"
-                  className="border-orange-200 bg-white text-orange-700"
+                  className="border-orange-200 bg-white text-orange-700 mr-0.5"
                 >
                   {ingredient}
                 </Badge>
@@ -208,7 +209,7 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
               <div className="relative w-full md:w-48 aspect-video md:aspect-square shrink-0">
                 <Image
                   className="object-cover group-hover:scale-105 transition-all duration-500 ease-in-out"
-                  src={data.imageUrl}
+                  src={data.image}
                   alt={data.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 192px"
@@ -219,6 +220,59 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
                 <ChefHatIcon className="h-12 w-12 text-white/30" />
               </div>
             )}
+            {/* card content */}
+            <div className="flex-1 py-5">
+              <CardHeader>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {data.cuisine && (
+                    <Badge
+                      variant="outline"
+                      className="border-orange-200 capitalize text-orange-600"
+                    >
+                      {data.cuisine}
+                    </Badge>
+                  )}
+                  {data.category && (
+                    <Badge
+                      variant="outline"
+                      className="border-stone-200 capitalize text-stone-600"
+                    >
+                      {data.category}
+                    </Badge>
+                  )}
+                </div>
+                <CardTitle className="text-xl font-bold text-stone-900 group-hover:text-orange-600 transition-colors">
+                  {data.title}
+                </CardTitle>
+                {data.description && (
+                  <CardDescription className="line-clamp-2">
+                    {data.description}
+                  </CardDescription>
+                )}
+              </CardHeader>
+              {(data.prepTime || data.cookTime || data.servings) && (
+                <CardContent>
+                  <div className="flex gap-4 text-sm text-stone-500 pt-4 ">
+                    {(data.prepTime || data.cookTime) && (
+                      <div className="flex items-center gap-1">
+                        <ClockIcon className="h-4 w-4" />
+                        <span>
+                          {parseInt(data.prepTime || 0) +
+                            parseInt(data.cookTime || 0)}{" "}
+                          minutes
+                        </span>
+                      </div>
+                    )}
+                    {data.servings && (
+                      <div className="flex items-center gap-1">
+                        <UsersIcon className="h-4 w-4" />
+                        <span>{data.servings} servings</span>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              )}
+            </div>
           </div>
         </Card>
       </Link>

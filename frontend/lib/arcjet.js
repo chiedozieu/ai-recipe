@@ -1,8 +1,24 @@
-import arcjet, { tokenBucket } from "@arcjet/next";
+import arcjet, { detectBot, shield, tokenBucket } from "@arcjet/next";
 
 export const aj = arcjet({
   key: process.env.NEXT_PUBLIC_ARCJET_KEY,
-  rules: [],
+  rules: [
+    shield({
+      mode: "LIVE",
+    }),
+
+    detectBot({
+      mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
+      // Block all bots except the following
+      allow: [
+        "CATEGORY:SEARCH_ENGINE", // Google, Bing, etc
+        "CATEGORY:PREVIEW", // Link previews e.g. Slack, Discord
+        // Uncomment to allow these other common bot categories
+        // See the full list at https://arcjet.com/bot-list
+        //"CATEGORY:MONITOR", // Uptime monitoring services
+      ],
+    }),
+  ],
 });
 
 // free tier pantry scans limited to 10 per month

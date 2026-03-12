@@ -131,7 +131,10 @@ const PantryRecipesPage = () => {
             <div className="mt-8 text-center">
               <Button
                 variant="outline"
-                onClick={() => fetchSuggestions(new FormData())}
+                onClick={() => {
+                  fetchSuggestions(new FormData())
+                  window.scrollTo(0, 0)
+                  }}
                 disabled={loading}
                 className="border-2 cursor-pointer border-stone-900 hover:bg-stone-900 hover:text-white gap-2"
               >
