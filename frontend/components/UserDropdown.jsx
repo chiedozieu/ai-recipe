@@ -15,7 +15,7 @@ const UserDropdown = () => {
             labelIcon={<CookieIcon size={16} />}
           />
           <UserButton.Link
-            href="/recipes"
+            href="/pantry"
             label="My Pantry"
             labelIcon={<RefrigeratorIcon size={16} />}
           />
