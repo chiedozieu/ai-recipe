@@ -112,7 +112,7 @@ const PantryPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 pt-24 pb-16 px-4 overflow-y-auto">
+    <div className="min-h-screen bg-stone-50 pt-24 pb-16 px-8 overflow-y-auto">
       <div className="container mx-auto max-w-5xl">
         <div className="mb-4">
           <div className="flex items-center justify-between mb-6">
@@ -127,16 +127,18 @@ const PantryPage = () => {
                 </p>
               </div>
             </div>
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              className="flex cursor-pointer group"
-              size="lg"
-              variant="primary"
-            >
-              <PlusIcon className="size-5 group-hover:rotate-180 transition duration-300" />
-              Add to Pantry
-            </Button>
           </div>
+            <div className="flex justify-center">
+              <Button
+                onClick={() => setIsModalOpen(true)}
+                className="flex cursor-pointer group mb-4 "
+                size="lg"
+                variant="primary"
+              >
+                <PlusIcon className="size-5 group-hover:rotate-180 transition duration-300" />
+                Add to Pantry
+              </Button>
+            </div>
           {itemsData?.scansLimit !== undefined && (
             <div className="bg-white py-3 px-4 border-2 border-stone-200 inline-flex items-center gap-3">
               <SparklesIcon className="h-5 w-5 text-orange-600" />
