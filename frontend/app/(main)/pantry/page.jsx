@@ -129,7 +129,7 @@ const PantryPage = () => {
             </div>
             <Button
               onClick={() => setIsModalOpen(true)}
-              className="hidden md:flex cursor-pointer group"
+              className="flex cursor-pointer group"
               size="lg"
               variant="primary"
             >
